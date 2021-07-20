@@ -23,7 +23,7 @@ data.post('/add',  (req, res)=>{
                 })
             })
             res.redirect('/');
-        } else {
+        } if (Biodata.length !== 0) {
             Biodata.create({
                 name: req.body.name,
                 email: req.body.email,
