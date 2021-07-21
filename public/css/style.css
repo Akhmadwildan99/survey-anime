@@ -74,3 +74,12 @@ button{
     border-radius: 5px;
 }
 
+.alert-primary{
+    max-width: 500px !important;
+    margin: 0 auto;
+}
+
+.hidden {
+    display : none;
+}
+

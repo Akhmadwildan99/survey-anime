@@ -1,126 +1,63 @@
 const express = require('express');
 const data = express();
 const {Anime, Biodata} = require('../models');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+const session = require('express-session');
 
-data.post('/add',  (req, res)=>{
-    Biodata.findAll()
-     .then(()=>{
-        if(Biodata.length == 0) {
-            Biodata.create({
-                name: req.body.name,
-                email: req.body.email,
-                age: req.body.age,
-                isTrue: true
-            }).then((Biodata)=>{
-                Anime.create({
-                    device: req.body.device,
-                    favorite: req.body.favorite,
-                    karakter: req.body.karakter,
-                    comment: req.body.comment,
-                    animeId: Biodata.get('id')
-                }).then((result)=>{
-                    console.log(result);
-                })
+data.use(cookieParser('secret'));
+data.use(
+    session({
+        cookie: {maxAge: 6000},
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true
+    })
+);
+data.use(flash());
+
+data.post('/add', async (req, res)=>{
+    const biodata = await Biodata.findAll();
+    if(biodata.length === 0){
+        Biodata.create({
+            name: req.body.name,
+            email: req.body.email,
+            age: req.body.age,
+            isTrue: true
+        }).then((Biodata)=>{
+            Anime.create({
+                device: req.body.device,
+                favorite: req.body.favorite,
+                karakter: req.body.karakter,
+                comment: req.body.comment,
+                animeId: Biodata.get('id')
+            }).then((result)=>{
+                console.log(result);
             })
-            res.redirect('/');
-        } if (Biodata.length !== 0) {
-            Biodata.create({
-                name: req.body.name,
-                email: req.body.email,
-                age: req.body.age,
-                isTrue: false
-            }).then((Biodata)=>{
-                Anime.create({
-                    device: req.body.device,
-                    favorite: req.body.favorite,
-                    karakter: req.body.karakter,
-                    comment: req.body.comment,
-                    animeId: Biodata.get('id')
-                }).then((result)=>{
-                    console.log(result)
-                })
+        })
+        req.flash('msg', 'Data berhasil di tambahkan ');
+        res.redirect('/');
+    } else{
+        Biodata.create({
+            name: req.body.name,
+            email: req.body.email,
+            age: req.body.age,
+            isTrue: false
+        }).then((Biodata)=>{
+            Anime.create({
+                device: req.body.device,
+                favorite: req.body.favorite,
+                karakter: req.body.karakter,
+                comment: req.body.comment,
+                animeId: Biodata.get('id')
+            }).then((result)=>{
+                console.log(result)
             })
-            res.redirect('/');
-        }
-     }).catch(err =>{
-         res.status(300).json(`can't add data`)
-     })
+        })
+        req.flash('msg', 'Data berhasil ditambahkan');
+        res.redirect('/');
+    }
+});
 
-})
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// data.post('/add', (req, res)=>{
-//   const{name, email, age, device, favorite, karakter, comment} = req.body;
-//   Biodata.findAll()
-//     .then(()=>{
-//         if(!Biodata && Anime) {
-//             Biodata.create({
-//                 name: name,
-//                 age: age,
-//                 email: email,
-//                 isTrue: true
-//             }).then(()=>{
-//                 Anime.create({
-//                     animeId: Biodata.get('id'),
-//                     device: device,
-//                     favorite: favorite,
-//                     karakter: karakter,
-//                     comment: comment
-//                 }).then(()=>{
-//                     console.log('berhasil dibuat')
-//                 }).catch(err=>{
-//                     res.status(400).json('can,t add data')
-//                 })
-//             }).catch(err=>{
-//                 res.status(400).json('can,t add data')
-//             })
-//         } else {
-//             Biodata.create({
-//                 name: name,
-//                 age: age,
-//                 email: email,
-//                 isTrue: false
-//             }).then(()=>{
-//                 Anime.create({
-//                     animeId: Biodata.get('id'),
-//                     device: device,
-//                     favorite: favorite,
-//                     karakter: karakter,
-//                     comment: comment
-//                 }).then(()=>{
-//                     console.log('berhasil dibuat')
-//                 }).catch(err=>{
-//                     res.status(400).json('can,t add data')
-//                 })
-//             }).catch(err=>{
-//                 res.status(400).json('can,t add data')
-//             })
-//         }
-//         res.redirect('/');
-//     }).catch(err=>{
-//         res.status(400).json('can,t add data')
-//     })
-// });
 
 module.exports = data
