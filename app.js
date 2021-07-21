@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
+const {Biodata, Anime} = require('./models')
 const data = require('./controller/data');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
@@ -32,6 +33,18 @@ app.get('/', (req, res)=>{
         layout: 'layouts/main-layouts',
         msg: req.flash('msg'),
     });
+});
+
+app.get('/cards', async (req, res)=>{
+    const biodatas = await Biodata.findAll({include: Anime});
+  
+    res.render('card',{
+        title: 'Halaman Daftar Peserta Survei',
+        css: 'css/cards.css',
+        layout: "layouts/main-layouts",
+        biodatas,
+        Anime,
+    })
 });
 
 app.listen(port, ()=>{

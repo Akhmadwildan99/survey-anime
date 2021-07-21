@@ -1,0 +1,23 @@
+<body>
+    <h1 id="title">Anime Survey List Card</h1>
+    <div class="container">
+        <div class="row">
+            <% biodatas.forEach(biodata => { %>
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <h5><%= biodata.name %> </h5>
+                            <p><%=biodata.email %> </p>
+                        </div>
+                        <div class="card-body">
+                            <p><%= biodata.Anime.favorite %> </p>
+                            <p><%= biodata.Anime.karakter %> </p>
+                            <p><%= biodata.Anime.comment %> </p>
+                        </div> 
+                      </div>
+                </div>
+            <% }) %>
+        </div>
+    </div>
+
+</body>
