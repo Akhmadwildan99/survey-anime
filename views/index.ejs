@@ -2,11 +2,6 @@
 <body>
     <h1 id="title">Anime Survey Form</h1>
     <p id="description">What's your favorite anime?</p>
-    <% if (msg.length !== 0) { %>
-        <div class="alert alert-primary" role="alert">
-            <%= msg %> 
-          </div>
-    <% } %> 
     <form id="survey-form" action="/add" method="POST">
         <label for="name" id="name-label">
             Name 

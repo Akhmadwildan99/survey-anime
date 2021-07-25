@@ -1,8 +1,6 @@
 const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
-const {Biodata, Anime} = require('./models')
-const data = require('./controller/data');
 const cookieParser = require('cookie-parser');
 const flash = require('connect-flash');
 const session = require('express-session');
@@ -13,7 +11,6 @@ app.use(expressLayouts); //use express-ejs-layouts middleware
 app.use(express.static('public')); //Middleware for file static
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
-app.use(data);
 app.use(cookieParser('secret'));
 app.use(
     session({
@@ -25,27 +22,31 @@ app.use(
 );
 app.use(flash());
 
+// Router
+const router = require('./router/router');
+app.use(router);
 
-app.get('/', (req, res)=>{
-    res.render('index', {
-        title: 'Halaman Form Survei',
-        css: 'css/style.css',
-        layout: 'layouts/main-layouts',
-        msg: req.flash('msg'),
-    });
-});
 
-app.get('/cards', async (req, res)=>{
-    const biodatas = await Biodata.findAll({include: Anime});
+// app.get('/', (req, res)=>{
+//     res.render('index', {
+//         title: 'Halaman Form Survei',
+//         css: 'css/style.css',
+//         layout: 'layouts/main-layouts',
+//         msg: req.flash('msg'),
+//     });
+// });
+
+// app.get('/cards', async (req, res)=>{
+//     const biodatas = await Biodata.findAll({include: Anime});
   
-    res.render('card',{
-        title: 'Halaman Daftar Peserta Survei',
-        css: 'css/cards.css',
-        layout: "layouts/main-layouts",
-        biodatas,
-        Anime,
-    })
-});
+//     res.render('card',{
+//         title: 'Halaman Daftar Peserta Survei',
+//         css: 'css/cards.css',
+//         layout: "layouts/main-layouts",
+//         biodatas,
+//         Anime,
+//     })
+// });
 
 app.listen(port, ()=>{
     console.log(`Server menyala di http://localhost:${port}`);
