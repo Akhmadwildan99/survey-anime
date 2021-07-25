@@ -1,20 +1,20 @@
-// const express = require('express');
-// const data = express();
+const express = require('express');
+const data = express();
 const {Anime, Biodata} = require('../models');
-// const cookieParser = require('cookie-parser');
-// const flash = require('connect-flash');
-// const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const flash = require('connect-flash');
+const session = require('express-session');
 
-// data.use(cookieParser('secret'));
-// data.use(
-//     session({
-//         cookie: {maxAge: 6000},
-//         secret: 'secret',
-//         resave: true,
-//         saveUninitialized: true
-//     })
-// );
-// data.use(flash());
+data.use(cookieParser('secret'));
+data.use(
+    session({
+        cookie: {maxAge: 6000},
+        secret: 'secret',
+        resave: true,
+        saveUninitialized: true
+    })
+);
+data.use(flash());
 
 module.exports = {
     new: (req, res) => {
@@ -22,7 +22,7 @@ module.exports = {
             title: 'Halaman Form Survei',
             css: 'css/style.css',
             layout: 'layouts/main-layouts',
-            // msg: req.flash('msg'),
+            msg: req.flash('msg'),
         })
     },
     create: async (req, res)=> {
@@ -44,7 +44,7 @@ module.exports = {
                     console.log(result);
                 })
             })
-            // req.flash('msg', 'Data berhasil di tambahkan ');
+            req.flash('msg', 'Data berhasil di tambahkan ');
             res.redirect('/');
         } else{
             Biodata.create({
@@ -63,7 +63,7 @@ module.exports = {
                     console.log(result)
                 })
             })
-            // req.flash('msg', 'Data berhasil ditambahkan');
+            req.flash('msg', 'Data berhasil ditambahkan');
             res.redirect('/');
         }
     
