@@ -23,7 +23,7 @@ app.use(
 app.use(flash());
 
 // Router
-const router = require('./router/router');
+const router = require('./router'); 
 app.use(router);
 
 
