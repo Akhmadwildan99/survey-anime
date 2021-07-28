@@ -47,7 +47,20 @@
         </label>
         <button id="submit" type="submit">Submit</button>
     </form>
-    <a class="btn btn-primary badge-pill" href="/cards">Anggota Survey</a>
+    <form class="mt-3" action="/card" method="POST">
+        <label for="name" id="name-label">
+            Name 
+            <input type="text" id="name" placeholder="Enter your name" name="name" required/>
+        </label>
+        <button class="btn btn-primary badge-pill" type="submit">Anggota Survey</button>
+    </form>
+    <form class="mt-3" action="/cards" method="POST">
+        <label for="name" id="name-label">
+            Name 
+            <input type="text" id="name" placeholder="Enter your name" name="name" required/>
+        </label>
+        <button class="btn btn-primary badge-pill" type="submit">Admin Survey</button>
+    </form>
     <script>
         const alert = document.querySelector('.alert')
         setTimeout(()=>{

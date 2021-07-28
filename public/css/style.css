@@ -42,6 +42,10 @@ form {
     border-radius: 5px;
 }
 
+form#form__2 {
+    margin-top: 20px;
+}
+
 label {
     display: block;
     margin-bottom: 25px;

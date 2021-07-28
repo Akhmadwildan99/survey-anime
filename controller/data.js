@@ -67,6 +67,68 @@ module.exports = {
             res.redirect('/');
         }
     
+    },
+    cards: async (req, res) =>{
+        const biodatas = await Biodata.findAll({include: Anime});
+        res.render('cards',{
+            title: 'Halaman Daftar Seluruh Peserta Survei',
+            css: 'css/cards.css',
+            layout: "layouts/main-layouts",
+            biodatas,
+            Anime,
+        });
+    },
+    card:  async(req, res) =>{
+        try{
+            const biodata = await Biodata.findOne({
+                include: Anime,
+                where: {
+                    id: req.params.id
+                }
+            })
+            res.render('card',{
+                title: 'Halaman Daftar Peserta Survei',
+                css: '',
+                layout: "layouts/main-layouts",
+                biodata,
+                Anime,
+            });
+        } catch (err) {
+            console.log(err);
+        }
+        
+        
+    },
+    loginAdmin:  (req, res) => {
+        Biodata.findOne({
+            where: {
+                name: req.body.name,
+                isTrue: true
+                }
+        })
+        .then((data)=>{
+            if(Biodata.length !== null) {
+                res.redirect(`/cards/${data.id}`);
+            } else {
+                console.log('username is wrong')
+            }
+        })
+     
+    },
+    login: (req, res)=> {
+        Biodata.findOne({
+            where: {
+                name: req.body.name,
+                isTrue: false
+                }
+        })
+        .then((data)=>{
+            if(Biodata.length !== null) {
+                res.redirect(`/card/${data.id}`);
+            } else {
+                console.log('username is wrong')
+            }
+        })
     }
 }
 
